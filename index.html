@@ -75,6 +75,8 @@ button{margin-top:12px;width:100%;min-height:54px;border:0;border-radius:12px;fo
 button:active{opacity:.85}
 .kakao{background:#FEE500;color:#191919}
 .ghost{background:transparent;color:var(--navy);border:1.5px solid var(--navy);font-weight:700}
+.hint{margin:4px 0 0;font-size:13px;line-height:1.6;color:#6A7590;text-align:center}
+.hint[hidden]{display:none}
 .msg{margin:12px 0 0;min-height:22px;font-size:14px;font-weight:700;color:var(--ink2);text-align:center}
 a.btn{display:flex;align-items:center;justify-content:center;gap:10px;box-shadow:0 3px 0 rgba(22,34,67,.25);margin-top:12px;width:100%;min-height:54px;border-radius:12px;font-size:17px;font-weight:900;text-decoration:none;background:var(--navy);color:#fff}
 a.btn:active{opacity:.85}
@@ -150,6 +152,7 @@ footer .in{padding:22px 20px 40px;font-size:12px;line-height:1.7;color:#6A7590;f
 <button type="button" id="shareBtn" class="kakao">카카오톡으로 전달하기</button>
 <button type="button" id="copyBtn" class="ghost">주소 복사</button>
 <p class="msg" id="msg" role="status" aria-live="polite"></p>
+<p class="hint" id="hint" hidden>카카오톡 안에서 열린 화면에서는 공유창이 지원되지 않습니다. 주소를 복사한 뒤 대화방에 붙여 넣어 주세요.</p>
 </div>
 
 <div class="stepcard">
@@ -174,6 +177,12 @@ footer .in{padding:22px 20px 40px;font-size:12px;line-height:1.7;color:#6A7590;f
   var msg = document.getElementById('msg');
   var timer;
   if (location.hash === '#image') { document.body.classList.add('image'); }
+  if (/KAKAOTALK/i.test(navigator.userAgent)) {
+    shareBtn.style.display = 'none';
+    copyBtn.className = 'kakao';
+    copyBtn.textContent = '주소 복사하기';
+    document.getElementById('hint').hidden = false;
+  }
   function say(t) {
     msg.textContent = t;
     clearTimeout(timer);
